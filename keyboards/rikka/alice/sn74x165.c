@@ -48,7 +48,6 @@ bool sn74x165_spi_receive(uint8_t* out) {
         }*/
 
         dprint("sn74x165 spi can't start \n");
-        spi_stop();
         return false;
     }
     res = spi_receive(out, SN74X165_LENGTH);

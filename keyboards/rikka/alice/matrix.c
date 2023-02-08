@@ -19,8 +19,13 @@ bool matrix_scan_custom(matrix_row_t curr_matrix[]) {
 
     print("matrix_scan_custom\n");
 
-    sn74x165_spi_receive(result);
-    uprintf("%d\n", result[0]);
+    wait_ms(100);
+
+    if (sn74x165_spi_receive(result)) {
+        uprintf("%d\n", result[0]);
+    } else {
+        print("sn74x165_spi_receive failed\n");
+    }
 
     return changed;
 }
