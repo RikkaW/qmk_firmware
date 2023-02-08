@@ -1,0 +1,74 @@
+{
+  "manufacturer": "Rikka",
+  "keyboard_name": "Alice",
+  "maintainer": "RikkaW",
+  "bootloader": "stm32-dfu",
+  "diode_direction": "COL2ROW",
+  "features": {
+    "bootmagic": true,
+    "command": false,
+    "console": true,
+    "extrakey": true,
+    "mousekey": true,
+    "nkro": true
+  },
+  "matrix_pins": {
+    "cols": [
+      "C13",
+      "C15"
+    ],
+    "rows": [
+      "C14",
+      "A1"
+    ]
+  },
+  "indicators": {
+    "caps_lock": "B3",
+    "on_state": 0
+  },
+  "processor": "STM32F072",
+  "url": "",
+  "usb": {
+    "device_version": "1.0.0",
+    "vid": "0xCA04",
+    "pid": "0x000C"
+  },
+  "layouts": {
+    "LAYOUT_all": {
+      "layout": [
+        {
+          "matrix": [
+            0,
+            0
+          ],
+          "x": 0,
+          "y": 0
+        },
+        {
+          "matrix": [
+            0,
+            1
+          ],
+          "x": 1,
+          "y": 0
+        },
+        {
+          "matrix": [
+            1,
+            0
+          ],
+          "x": 2,
+          "y": 0
+        },
+        {
+          "matrix": [
+            1,
+            1
+          ],
+          "x": 3,
+          "y": 0
+        }
+      ]
+    }
+  }
+}

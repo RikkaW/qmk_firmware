@@ -1,0 +1,13 @@
+#pragma once
+
+#define SPI_DRIVER SPID2
+#define SPI_SCK_PIN B13
+#define SPI_SCK_PAL_MODE 5
+#define SPI_MOSI_PIN B15
+#define SPI_MOSI_PAL_MODE 5
+#define SPI_MISO_PIN B14
+#define SPI_MISO_PAL_MODE 5
+
+#define SN74X165_SPI_SLAVE_SELECT_PIN A4
+#define SN74X165_PL_PIN A3
+#define SN74X165_LENGTH 1
