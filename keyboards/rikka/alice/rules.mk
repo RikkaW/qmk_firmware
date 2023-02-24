@@ -1,9 +1,9 @@
 DEBUG_ENABLE = yes
-CUSTOM_MATRIX = lite
+CUSTOM_MATRIX = yes
 
 SRC += keyboard.c \
     matrix.c \
-	sn74x165.c
+    alice.c
 QUANTUM_LIB_SRC += spi_master.c
 
 # Wildcard to allow APM32 MCU
