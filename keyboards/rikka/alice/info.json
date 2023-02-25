@@ -3,7 +3,6 @@
     "keyboard_name": "Alice",
     "maintainer": "RikkaW",
     "bootloader": "stm32-dfu",
-    "diode_direction": "COL2ROW",
     "features": {
         "bootmagic": true,
         "command": false,
@@ -16,7 +15,7 @@
     "url": "",
     "usb": {
         "device_version": "0.0.1",
-        "vid": "0xFEED",
-        "pid": "0x7231"
+        "vid": "0x5249",
+        "pid": "0x414C"
     }
 }
