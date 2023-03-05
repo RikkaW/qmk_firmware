@@ -89,6 +89,9 @@ union {
 #ifdef JOYSTICK_ENABLE
     report_joystick_t joystick;
 #endif
+#ifdef RADIAL_DIAL_ENABLE
+    report_radial_dial_t radial_dial;
+#endif
 } universal_report_blank = {0};
 
 /* ---------------------------------------------------------
@@ -223,6 +226,24 @@ static const USBEndpointConfig digitizer_ep_config = {
     DIGITIZER_EPSIZE,       /* IN maximum packet size */
     0,                      /* OUT maximum packet size */
     &digitizer_ep_state,    /* IN Endpoint state */
+    NULL,                   /* OUT endpoint state */
+    usb_lld_endpoint_fields /* USB driver specific endpoint fields */
+};
+#endif
+
+#if defined(RADIAL_DIAL_ENABLE) && !defined(RADIAL_DIAL_SHARED_EP)
+/* digitizer endpoint state structure */
+static USBInEndpointState radial_dial_ep_state;
+
+/* digitizer endpoint initialization structure (IN) - see USBEndpointConfig comment at top of file */
+static const USBEndpointConfig radial_dial_ep_config = {
+    USB_EP_MODE_TYPE_INTR,  /* Interrupt EP */
+    NULL,                   /* SETUP packet notification callback */
+    dummy_usb_cb,           /* IN notification callback */
+    NULL,                   /* OUT notification callback */
+    RADIAL_DIAL_EPSIZE,     /* IN maximum packet size */
+    0,                      /* OUT maximum packet size */
+    &radial_dial_ep_state,  /* IN Endpoint state */
     NULL,                   /* OUT endpoint state */
     usb_lld_endpoint_fields /* USB driver specific endpoint fields */
 };
@@ -370,9 +391,6 @@ typedef struct {
 #ifdef VIRTSER_ENABLE
             usb_driver_config_t serial_driver;
 #endif
-#if defined(RADIAL_DIAL_ENABLE) && !defined(RADIAL_DIAL_SHARED_EP)
-            usb_driver_config_t radial_dial_driver;
-#endif
         };
         usb_driver_config_t array[0];
     };
@@ -412,14 +430,6 @@ static usb_driver_configs_t drivers = {
 #    define CDC_IN_MODE USB_EP_MODE_TYPE_BULK
 #    define CDC_OUT_MODE USB_EP_MODE_TYPE_BULK
     .serial_driver = QMK_USB_DRIVER_CONFIG(CDC, CDC_NOTIFICATION_EPNUM, false),
-#endif
-
-#if defined(RADIAL_DIAL_ENABLE) && !defined(RADIAL_DIAL_SHARED_EP)
-#    define RADIAL_DIAL_IN_CAPACITY 4
-#    define RADIAL_DIAL_OUT_CAPACITY 4
-#    define RADIAL_DIAL_IN_MODE USB_EP_MODE_TYPE_BULK
-#    define RADIAL_DIAL_OUT_MODE USB_EP_MODE_TYPE_BULK
-    .radial_dial_driver = QMK_USB_DRIVER_CONFIG(RADIAL_DIAL, 0, false),
 #endif
 };
 
@@ -532,6 +542,9 @@ static void usb_event_cb(USBDriver *usbp, usbevent_t event) {
 #endif
 #if defined(DIGITIZER_ENABLE) && !defined(DIGITIZER_SHARED_EP)
             usbInitEndpointI(usbp, DIGITIZER_IN_EPNUM, &digitizer_ep_config);
+#endif
+#if defined(RADIAL_DIAL_ENABLE) && !defined(RADIAL_DIAL_SHARED_EP)
+            usbInitEndpointI(usbp, RADIAL_DIAL_IN_EPNUM, &radial_dial_ep_config);
 #endif
             for (int i = 0; i < NUM_USB_DRIVERS; i++) {
 #ifdef USB_ENDPOINTS_ARE_REORDERABLE
