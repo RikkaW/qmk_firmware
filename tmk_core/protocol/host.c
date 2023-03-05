@@ -246,13 +246,21 @@ void host_programmable_button_send(uint32_t data) {
 
 __attribute__((weak)) void send_programmable_button(report_programmable_button_t *report) {}
 
-void host_radial_dial_send(report_radial_dial_t *report) {
-    if (!driver) return;
+#ifdef RADIAL_DIAL_ENABLE
+void host_radial_dial_send(uint16_t button, int16_t rotation) {
+    report_radial_dial_t report = {
 #ifdef RADIAL_DIAL_SHARED_EP
-    report->report_id = REPORT_ID_RADIAL_DIAL;
+            .report_id = REPORT_ID_RADIAL_DIAL,
 #endif
-    (*driver->send_radial_dial)(report);
+            .button    = button,
+            .rotation  = rotation,
+    };
+
+    send_radial_dial(&report);
 }
+#endif
+
+__attribute__((weak)) void send_radial_dial(report_radial_dial_t *report) {}
 
 uint16_t host_last_system_usage(void) {
     return last_system_usage;

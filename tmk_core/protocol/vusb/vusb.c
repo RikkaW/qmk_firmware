@@ -306,6 +306,7 @@ void send_programmable_button(report_programmable_button_t *report) {
     }
 #endif
 }
+
 void send_radial_dial(report_radial_dial_t *report) {
 #ifdef RADIAL_DIAL_ENABLE
     if (usbInterruptIsReadyShared()) {

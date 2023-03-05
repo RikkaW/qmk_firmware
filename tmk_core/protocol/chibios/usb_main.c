@@ -968,31 +968,13 @@ void radial_dial_in_cb(USBDriver *usbp, usbep_t ep) {
     (void)ep;
 }
 #    endif
+#endif
 
 void send_radial_dial(report_radial_dial_t *report) {
-    osalSysLock();
-    if (usbGetDriverStateI(&USB_DRIVER) != USB_ACTIVE) {
-        osalSysUnlock();
-        return;
-    }
-
-    if (usbGetTransmitStatusI(&USB_DRIVER, RADIAL_DIAL_IN_EPNUM)) {
-        /* Need to either suspend, or loop and call unlock/lock during
-         * every iteration - otherwise the system will remain locked,
-         * no interrupts served, so USB not going through as well.
-         * Note: for suspend, need USB_USE_WAIT == TRUE in halconf.h */
-        if (osalThreadSuspendTimeoutS(&(&USB_DRIVER)->epc[RADIAL_DIAL_IN_EPNUM]->in_state->thread, TIME_MS2I(10)) == MSG_TIMEOUT) {
-            osalSysUnlock();
-            return;
-        }
-    }
-    usbStartTransmitI(&USB_DRIVER, RADIAL_DIAL_IN_EPNUM, (uint8_t *)report, sizeof(report_radial_dial_t));
-    osalSysUnlock();
+#ifdef RADIAL_DIAL_ENABLE
+    send_report(RADIAL_DIAL_IN_EPNUM, report, sizeof(report_radial_dial_t));
+#endif
 }
-
-#else  /* RADIAL_DIAL_ENABLE */
-void send_radial_dial(report_radial_dial_t *report) { (void)report; }
-#endif /* RADIAL_DIAL_ENABLE */
 
 /* ---------------------------------------------------------
  *                   Console functions

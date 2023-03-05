@@ -28,9 +28,9 @@ typedef struct {
     void (*send_keyboard)(report_keyboard_t *);
     void (*send_mouse)(report_mouse_t *);
     void (*send_extra)(report_extra_t *);
-    void (*send_radial_dial)(report_radial_dial_t *);
 } host_driver_t;
 
 void send_joystick(report_joystick_t *report);
 void send_digitizer(report_digitizer_t *report);
 void send_programmable_button(report_programmable_button_t *report);
+void send_radial_dial(report_radial_dial_t *report);

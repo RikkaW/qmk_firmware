@@ -85,8 +85,7 @@ static uint8_t keyboard_leds(void);
 static void    send_keyboard(report_keyboard_t *report);
 static void    send_mouse(report_mouse_t *report);
 static void    send_extra(report_extra_t *report);
-static void    send_radial_dial(report_radial_dial_t *report);
-host_driver_t  lufa_driver = {keyboard_leds, send_keyboard, send_mouse, send_extra, send_radial_dial};
+host_driver_t  lufa_driver = {keyboard_leds, send_keyboard, send_mouse, send_extra};
 
 void send_report(uint8_t endpoint, void *report, size_t size) {
     uint8_t timeout = 255;
@@ -799,20 +798,7 @@ void virtser_send(const uint8_t byte) {
  */
 static void send_radial_dial(report_radial_dial_t *report) {
 #ifdef RADIAL_DIAL_ENABLE
-    uint8_t timeout = 255;
-
-    /* Select the Mouse Report Endpoint */
-    Endpoint_SelectEndpoint(RADIAL_DIAL_IN_EPNUM);
-
-    /* Check if write ready for a polling interval around 10ms */
-    while (timeout-- && !Endpoint_IsReadWriteAllowed()) _delay_us(40);
-    if (!Endpoint_IsReadWriteAllowed()) return;
-
-    /* Write Mouse Report Data */
-    Endpoint_Write_Stream_LE(report, sizeof(report_radial_dial_t), NULL);
-
-    /* Finalize the stream transfer to send the last packet */
-    Endpoint_ClearIN();
+    send_report(RADIAL_DIAL_IN_EPNUM, report, sizeof(report_radial_dial_t));
 #endif
 }
 
