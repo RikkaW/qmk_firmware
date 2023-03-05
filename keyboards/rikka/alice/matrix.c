@@ -44,7 +44,7 @@ void matrix_init(void) {
     memset(matrix_read_debouncing, 0, size_matrix);
 
     // This *must* be called for correct keyboard behavior
-    matrix_init_quantum();
+    matrix_init_kb();
 }
 
 uint8_t matrix_scan(void) {
@@ -100,7 +100,7 @@ uint8_t matrix_scan(void) {
 
 end:
     // This *must* be called for correct keyboard behavior
-    matrix_scan_quantum();
+    matrix_scan_kb();
     return changed;
 }
 
